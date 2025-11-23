@@ -2,169 +2,728 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Proposal Intro</title>
+  <title>Bizim Hikayemiz 💛</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* Genel sayfa stili */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --bg: #f9f3e9;
+      --card: #fffaf2;
+      --accent: #d9a25f;
+      --accent-soft: #f0cfa0;
+      --text: #40352b;
+      --muted: #8b7c6b;
+      --error: #d9534f;
+      --success: #3c9d63;
     }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: #f4e9dc;          /* bej arka plan */
-      color: #2b2b2b;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
     }
 
-    .wrapper {
+    .page {
       width: 100%;
-      max-width: 480px;             /* mobil odaklı, dar bir alan */
-      padding: 24px;
+      max-width: 480px;
+      padding: 16px;
     }
 
     .card {
-      background: #fffaf3;
+      background: var(--card);
       border-radius: 24px;
-      padding: 32px 24px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      padding: 24px 20px 32px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.12);
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    .subtitle {
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    header .eyebrow {
       font-size: 0.8rem;
-      letter-spacing: 0.15em;
       text-transform: uppercase;
-      opacity: 0.7;
+      letter-spacing: .16em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    header h1 {
+      font-weight: 300;
+      font-size: 1.6rem;
+      line-height: 1.3;
+    }
+
+    header h1 span.highlight {
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      margin: 12px 0;
+    }
+
+    section.screen {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .4s ease, transform .4s ease;
+    }
+
+    section.screen.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .step-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
       margin-bottom: 12px;
     }
 
-    .messages {
-      position: relative;
-      height: 80px; /* Mesaj alanı yüksekliği – satır sayısına göre ayarlayabilirsin */
+    .fade-message {
+      font-size: 1rem;
+      line-height: 1.4;
+      min-height: 60px;
+    }
+
+    .fade-message span {
+      display: none;
+    }
+
+    .fade-message span.active-fade {
+      display: inline-block;
+      animation: fadeIn .6s ease both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .field {
+      margin-top: 16px;
       display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    input[type="text"] {
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid #e1d3c0;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(217,162,95,0.18);
+    }
+
+    .helper {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .error {
+      font-size: 0.85rem;
+      color: var(--error);
+      margin-top: 4px;
+    }
+
+    .qualities-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      border: 1px solid #e1d3c0;
+      background: #fff;
+      cursor: pointer;
+      transition: background .2s, transform .1s, border-color .2s;
+      user-select: none;
+    }
+
+    .chip.good.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+      transform: translateY(1px);
+    }
+
+    .chip.bad {
+      background: #fff1f1;
+      border-color: #f2c2c2;
+    }
+
+    .chip.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .tiny-msg {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 4px;
+      min-height: 16px;
+    }
+
+    .best-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .best-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 6px;
+      border: 2px solid transparent;
+      text-align: center;
+      cursor: pointer;
+      transition: transform .1s, border-color .2s, box-shadow .2s;
+    }
+
+    .best-card img {
+      width: 100%;
+      border-radius: 12px;
+      display: block;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    .best-card span {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .best-card.correct:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+
+    .best-card.shake {
+      animation: shake .4s;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translateX(-2px); }
+      20%, 80% { transform: translateX(4px); }
+      30%, 50%, 70% { transform: translateX(-4px); }
+      40%, 60% { transform: translateX(4px); }
+    }
+
+    .question-main {
+      font-size: 1.4rem;
+      text-align: center;
+      margin: 24px 0 18px;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
+      transition: transform .1s, box-shadow .2s, background .2s, min-width .2s, font-size .2s;
+      min-width: 96px;
     }
 
-    .message {
-      position: absolute;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-      opacity: 0;
-      transform: translateY(8px);
-      font-size: 1.4rem;
-      font-weight: 500;
-      line-height: 1.3;
-      padding: 0 8px;
-      /* Ortak animasyon */
-      animation-name: fadeMessage;
-      animation-duration: 16s;  /* toplam döngü süresi */
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: none;
     }
 
-    /* Her mesaj için farklı gecikme – sırayla görünmeleri için */
-    .message-1 {
-      animation-delay: 0s;
-    }
-    .message-2 {
-      animation-delay: 4s;
-    }
-    .message-3 {
-      animation-delay: 8s;
-    }
-    .message-4 {
-      animation-delay: 12s;
+    .btn-ghost {
+      background: #fff;
+      border: 1px solid #ead9c2;
+      color: var(--text);
     }
 
-    @keyframes fadeMessage {
-      0% {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-      5%,
-      25% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      30%,
-      100% {
-        opacity: 0;
-        transform: translateY(-8px);
-      }
+    .btn-soft-selected {
+      background: var(--success);
     }
 
-    .hint {
+    .btn-small {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+
+    .btn.disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .footer {
       margin-top: 20px;
-      font-size: 0.85rem;
-      opacity: 0.7;
+      font-size: 0.8rem;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .progress {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .love-letter {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-top: 8px;
+      white-space: pre-line;
     }
 
     .heart {
-      position: absolute;
-      bottom: 16px;
-      right: 18px;
-      font-size: 1.2rem;
-      opacity: 0.8;
-      animation: pulse 1.4s infinite ease-in-out;
+      font-size: 1.4rem;
+      margin-top: 10px;
+      text-align: center;
     }
 
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-        opacity: 0.8;
-      }
-      50% {
-        transform: scale(1.16);
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        padding: 28px 18px 40px;
-        border-radius: 20px;
-      }
-
-      .messages {
-        height: 72px;
-      }
-
-      .message {
-        font-size: 1.2rem;
-      }
+    /* Küçük ekranlarda biraz daha sıkı padding */
+    @media (max-width: 360px) {
+      .card { padding: 18px 14px 24px; border-radius: 18px; }
+      header h1 { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
+  <div class="page">
     <div class="card">
-      <div class="subtitle">When love meets code</div>
+      <header>
+        <div class="eyebrow">küçük bir oyun zamanı</div>
+        <h1>
+          Bu sayfa <span class="highlight">sadece senin için</span> yazıldı.
+        </h1>
+      </header>
 
-      <div class="messages">
-        <!-- Buradaki metinleri istediğin gibi değiştir -->
-        <div class="message message-1">1</div>
-        <div class="message message-2">2</div>
-        <div class="message message-3">3</div>
-        <div class="message message-4">4</div>
+      <div class="progress" id="progressText"></div>
+
+      <main>
+        <!-- 1. EKRAN – FADE MESAJLAR -->
+        <section class="screen active" data-step="1">
+          <div class="step-title">Merhaba 🕊️</div>
+          <div class="step-sub">
+            Okurken biraz gülümseyeceğin, biraz da “bu çocuk ne yapıyor?” diyeceğin mini bir yolculuk…
+          </div>
+          <div class="fade-message" id="fadeMessages">
+            <span class="active-fade">Hazırsan, birlikte küçük bir oyuna başlıyoruz.</span>
+            <span>Bu sayfadaki her şey sadece senin için yazıldı.</span>
+            <span>Bazı sorular soracağım… ama hepsi çok masum, söz. 😇</span>
+          </div>
+          <div style="margin-top: 20px; text-align:center;">
+            <button class="btn btn-small" id="startBtn">Devam et</button>
+          </div>
+        </section>
+
+        <!-- 2. EKRAN – İSİM OYUNU -->
+        <section class="screen" data-step="2">
+          <div class="step-title">Önce seni tanıyalım ✍️</div>
+          <div class="step-sub">
+            Aşağıya <strong>adını ve soyadını</strong> yazar mısın?
+          </div>
+          <div class="field">
+            <label for="fullName">Tam adın</label>
+            <input type="text" id="fullName" placeholder="Örn: Ayşe Yılmaz" />
+            <div class="helper" id="nameHelper">İpucu: Doğru yazman önemli olacak. 🙂</div>
+            <div class="error" id="nameError"></div>
+          </div>
+          <div style="margin-top: 16px; text-align:right;">
+            <button class="btn btn-small" id="nameNextBtn">Devam</button>
+          </div>
+        </section>
+
+        <!-- 3. EKRAN – NEDEN SEN? OYUNU -->
+        <section class="screen" data-step="3">
+          <div class="step-title">Peki… neden sen? 🌟</div>
+          <div class="step-sub">
+            Sence neden seni seçmeliyim? Aşağıdakilerden sana uyan <strong>güzel özellikleri</strong> seç.
+            Kötü olanlar kaybolur gider zaten. 😉
+          </div>
+          <div class="qualities-grid" id="qualitiesGrid">
+            <!-- good qualities -->
+            <div class="chip good" data-type="good">Çok komiksin</div>
+            <div class="chip good" data-type="good">Güvenilirsin</div>
+            <div class="chip good" data-type="good">Sabırlısın</div>
+            <div class="chip good" data-type="good">Aşırı tatlısın</div>
+            <div class="chip good" data-type="good">İyi bir dinleyicisin</div>
+            <div class="chip good" data-type="good">Delirdikçe yanımdasın</div>
+            <div class="chip good" data-type="good">Zekisin</div>
+            <div class="chip good" data-type="good">Kalbin tertemiz</div>
+            <div class="chip good" data-type="good">Beraber çok eğleniyoruz</div>
+
+            <!-- bad qualities -->
+            <div class="chip bad" data-type="bad">Sürekli trip atarsın</div>
+            <div class="chip bad" data-type="bad">Hiç gülmezsin</div>
+            <div class="chip bad" data-type="bad">Mesajlara asla dönmezsin</div>
+            <div class="chip bad" data-type="bad">Hep geç kalırsın</div>
+            <div class="chip bad" data-type="bad">Haksızken bile üste çıkarsın</div>
+            <div class="chip bad" data-type="bad">Asla ciddileşmezsin</div>
+          </div>
+          <div class="tiny-msg" id="qualitiesMsg"></div>
+          <div style="margin-top: 16px; text-align:right;">
+            <button class="btn btn-small" id="qualitiesNextBtn" disabled>Devam</button>
+          </div>
+        </section>
+
+        <!-- 4. EKRAN – EN İYİ KİM? -->
+        <section class="screen" data-step="4">
+          <div class="step-title">Dünyanın en iyi insanı kim? 🏆</div>
+          <div class="step-sub">
+            Aşağıdaki karelerden sence en özel olanını seç. (Bence cevap çok net ama yine de sana sorayım. 🙃)
+          </div>
+          <div class="best-grid" id="bestGrid">
+            <!-- KENDİ FOTOĞRAFI – BURAYI KENDİ RESMİNLE DEĞİŞTİR -->
+            <div class="best-card correct" data-correct="true">
+              <img src="images/sen.jpg" alt="Sen" />
+              <span>Sen</span>
+            </div>
+            <!-- Diğerleri: placeholder, istediğin görselleri koy -->
+            <div class="best-card">
+              <img src="https://placekitten.com/300/300" alt="Kedi" />
+              <span>Çok cool bir kedi</span>
+            </div>
+            <div class="best-card">
+              <img src="https://placehold.co/300x300" alt="Ördek" />
+              <span>Rastgele bir ördek</span>
+            </div>
+            <div class="best-card">
+              <img src="https://placehold.co/300x300?text=Villain" alt="Kötü karakter" />
+              <span>Film kötü karakteri</span>
+            </div>
+            <div class="best-card">
+              <img src="https://placehold.co/300x300?text=Celebrity" alt="Ünlü" />
+              <span>Rastgele ünlü biri</span>
+            </div>
+            <div class="best-card">
+              <img src="https://placehold.co/300x300?text=Duck" alt="Garip biri" />
+              <span>Garip ama tatlı biri</span>
+            </div>
+          </div>
+          <div class="tiny-msg" id="bestMsg"></div>
+        </section>
+
+        <!-- 5. EKRAN – BÜYÜK SORU -->
+        <section class="screen" data-step="5">
+          <div class="step-title">Son bir soru kaldı… 💫</div>
+          <div class="question-main" id="bigQuestion">
+            Benimle çıkar mısın?
+          </div>
+          <div class="btn-row">
+            <button class="btn" id="yesBtn">Evet 💛</button>
+            <button class="btn btn-ghost" id="noBtn">Hayır…</button>
+          </div>
+          <div class="tiny-msg" id="noMsg"></div>
+        </section>
+
+        <!-- 6. EKRAN – MEKTUP -->
+        <section class="screen" data-step="6">
+          <div class="step-title">Cevabın için teşekkür ederim 💌</div>
+          <div class="step-sub">
+            Buradan sonrası sadece ikimiz arasında kalsın istedim. O yüzden sana minik bir not yazdım:
+          </div>
+          <div class="love-letter" id="loveLetter">
+Sevgili [İsmi buraya yaz],
+
+Bu sayfanın her satırında, her küçük oyunda aslında tek bir şey anlatmaya çalıştım:
+Sen hayatıma girdiğinden beri, en sıradan günler bile daha güzel.
+
+Beraber güldüğümüz, saçma sapan şeylere takıldığımız,
+saati unutup konuştuğumuz,
+yorgun günün sonunda bile mesajını görünce enerji geldiği
+her an benim için çok değerli.
+
+Eğer istersen;
+biraz daha gülüp,
+biraz daha saçmalayıp,
+biraz daha beraber büyüyelim.
+
+Ben elimden gelenin en iyisini yapmaya hazırım. 💛
+          </div>
+          <div class="heart">💛</div>
+        </section>
+      </main>
+
+      <div class="footer">
+        <span id="footerText">Hazırsan aşağıdan devam edebilirsin.</span>
       </div>
-
-      <p class="hint">Mesajların bitmesini bekle ya da aşağı kaydırmaya devam et.</p>
-
-      <div class="heart">❤</div>
     </div>
   </div>
+
+  <script>
+    // =====================
+    // GENEL ADIM YÖNETİMİ
+    // =====================
+    const screens = Array.from(document.querySelectorAll(".screen"));
+    const progressText = document.getElementById("progressText");
+    let currentStep = 1;
+    const totalSteps = screens.length;
+
+    function updateStep(step) {
+      currentStep = step;
+      screens.forEach(s => {
+        const st = Number(s.dataset.step);
+        if (st === step) {
+          s.classList.add("active");
+        } else {
+          s.classList.remove("active");
+        }
+      });
+      if (step <= 5) {
+        progressText.textContent = `Adım ${step} / 5`;
+      } else {
+        progressText.textContent = "";
+      }
+    }
+
+    updateStep(1);
+
+    // =====================
+    // 1. EKRAN – FADE MESAJLAR
+    // =====================
+    const fadeContainer = document.getElementById("fadeMessages");
+    const fadeSpans = Array.from(fadeContainer.querySelectorAll("span"));
+    let fadeIndex = 0;
+
+    function cycleFadeMessages() {
+      fadeSpans.forEach((span, i) => {
+        span.classList.toggle("active-fade", i === fadeIndex);
+      });
+      fadeIndex = (fadeIndex + 1) % fadeSpans.length;
+    }
+
+    // 3 saniyede bir mesaj değişsin
+    setInterval(cycleFadeMessages, 3000);
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      updateStep(2);
+    });
+
+    // =====================
+    // 2. EKRAN – İSİM OYUNU
+    // =====================
+    const fullNameInput = document.getElementById("fullName");
+    const nameError = document.getElementById("nameError");
+    const nameHelper = document.getElementById("nameHelper");
+    const nameNextBtn = document.getElementById("nameNextBtn");
+
+    // Burayı kendine göre düzenle:
+    const YOUR_LAST_NAME = "Kundakçı"; // kendi soyadını yaz
+    let nameAttempts = 0;
+
+    function checkName() {
+      const value = fullNameInput.value.trim();
+      nameError.textContent = "";
+
+      if (!value) {
+        nameError.textContent = "Önce ismini yazmalısın. 🙂";
+        return false;
+      }
+
+      // Örnek mantık: son kelimeyi soyad olarak kabul et
+      const parts = value.split(/\s+/);
+      const last = parts[parts.length - 1];
+
+      // İlk 2 denemede hep hata verelim (istersen kaldır)
+      nameAttempts++;
+      if (nameAttempts >= 2 && last !== YOUR_LAST_NAME) {
+        nameHelper.textContent = "Belki soyad kısmına benim soyadımı denemelisin ;) (" + YOUR_LAST_NAME + ")";
+      }
+
+      if (last !== YOUR_LAST_NAME) {
+        nameError.textContent = "Hmm... sanki bir şey eksik ya da yanlış. Bir daha dener misin?";
+        return false;
+      }
+
+      // Doğru yazmış :)
+      nameHelper.textContent = "Tamamdır, artık resmen aynı soyadlı gibi görünüyoruz. 😏";
+      return true;
+    }
+
+    nameNextBtn.addEventListener("click", () => {
+      if (checkName()) {
+        updateStep(3);
+      }
+    });
+
+    fullNameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        nameNextBtn.click();
+      }
+    });
+
+    // =====================
+    // 3. EKRAN – NEDEN SEN? OYUNU
+    // =====================
+    const qualitiesGrid = document.getElementById("qualitiesGrid");
+    const qualitiesNextBtn = document.getElementById("qualitiesNextBtn");
+    const qualitiesMsg = document.getElementById("qualitiesMsg");
+
+    let goodCount = 0;
+    const totalGood = qualitiesGrid.querySelectorAll(".chip.good").length;
+
+    qualitiesGrid.addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip");
+      if (!chip || chip.classList.contains("disabled")) return;
+
+      const type = chip.dataset.type;
+
+      if (type === "good") {
+        // seç / kaldır
+        chip.classList.toggle("selected");
+        goodCount = qualitiesGrid.querySelectorAll(".chip.good.selected").length;
+
+        if (goodCount === totalGood) {
+          qualitiesMsg.textContent = "Tam da böyle düşünüyordum. Hiç mütevazı değilsin ama haklısın. 😌";
+          qualitiesNextBtn.disabled = false;
+        } else {
+          qualitiesMsg.textContent = "";
+          qualitiesNextBtn.disabled = true;
+        }
+      } else if (type === "bad") {
+        // kötü özellikler dokununca silinsin
+        chip.classList.add("disabled");
+        chip.textContent = "Yok yok, bu kesinlikle sen değilsin. 🙅‍♂️";
+        setTimeout(() => {
+          chip.style.opacity = "0";
+          setTimeout(() => {
+            chip.remove();
+          }, 300);
+        }, 600);
+        qualitiesMsg.textContent = "Kötü özellikler hemen gidiyor bak, hiç yakışmıyor sana. 💛";
+      }
+    });
+
+    qualitiesNextBtn.addEventListener("click", () => {
+      updateStep(4);
+    });
+
+    // =====================
+    // 4. EKRAN – EN İYİ KİM?
+    // =====================
+    const bestGrid = document.getElementById("bestGrid");
+    const bestMsg = document.getElementById("bestMsg");
+
+    bestGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".best-card");
+      if (!card) return;
+
+      const isCorrect = card.dataset.correct === "true";
+
+      if (isCorrect) {
+        bestMsg.textContent = "İşte bu! Zaten başka cevabı kabul etmeyecektim. 😌";
+        // kısa bir gecikmeyle sonraki adıma geç
+        setTimeout(() => updateStep(5), 800);
+      } else {
+        card.classList.remove("shake");
+        void card.offsetWidth; // reflow
+        card.classList.add("shake");
+        bestMsg.textContent = "Yok yok, o değil. Bir daha dene. 😉";
+      }
+    });
+
+    // =====================
+    // 5. EKRAN – BÜYÜK SORU
+    // =====================
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const noMsg = document.getElementById("noMsg");
+    const footerText = document.getElementById("footerText");
+
+    const noTexts = [
+      "Ne demek hayır ya… 😳",
+      "Bir daha düşün bence.",
+      "Cidden mi?",
+      "Ben üzülürüm bak… 🥺",
+      "Son şansın, pişman olma. 😏"
+    ];
+    let noClickCount = 0;
+
+    yesBtn.addEventListener("click", () => {
+      footerText.textContent = "Artık hikayenin geri kalanı gerçek hayatta devam ediyor. 💛";
+      updateStep(6);
+    });
+
+    noBtn.addEventListener("click", () => {
+      noClickCount++;
+      const idx = Math.min(noClickCount - 1, noTexts.length - 1);
+      noMsg.textContent = noTexts[idx];
+
+      // "Hayır" butonu küçülsün / şekil değiştirsin
+      if (noClickCount >= 2) {
+        noBtn.textContent = "Emin misin?";
+      }
+      if (noClickCount >= 3) {
+        noBtn.textContent = "Bak son diyorum";
+      }
+      if (noClickCount >= 4) {
+        noBtn.textContent = "Tamam, vazgeçtim 😅";
+        noBtn.classList.add("disabled");
+      }
+
+      // Evet butonu büyüsün, daha cazip olsun
+      if (noClickCount >= 2) {
+        yesBtn.style.minWidth = "180px";
+        yesBtn.style.fontSize = "1.1rem";
+        yesBtn.classList.add("btn-soft-selected");
+      }
+      if (noClickCount >= 4) {
+        yesBtn.style.minWidth = "220px";
+        yesBtn.textContent = "Tamam, hadi EVET de artık 💛";
+      }
+    });
+  </script>
 </body>
 </html>
-
