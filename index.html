@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposal Intro</title>
+  <style>
+    /* Genel sayfa stili */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: #f4e9dc;          /* bej arka plan */
+      color: #2b2b2b;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 480px;             /* mobil odaklı, dar bir alan */
+      padding: 24px;
+    }
+
+    .card {
+      background: #fffaf3;
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 12px;
+    }
+
+    .messages {
+      position: relative;
+      height: 80px; /* Mesaj alanı yüksekliği – satır sayısına göre ayarlayabilirsin */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .message {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(8px);
+      font-size: 1.4rem;
+      font-weight: 500;
+      line-height: 1.3;
+      padding: 0 8px;
+      /* Ortak animasyon */
+      animation-name: fadeMessage;
+      animation-duration: 16s;  /* toplam döngü süresi */
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    /* Her mesaj için farklı gecikme – sırayla görünmeleri için */
+    .message-1 {
+      animation-delay: 0s;
+    }
+    .message-2 {
+      animation-delay: 4s;
+    }
+    .message-3 {
+      animation-delay: 8s;
+    }
+    .message-4 {
+      animation-delay: 12s;
+    }
+
+    @keyframes fadeMessage {
+      0% {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      5%,
+      25% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      30%,
+      100% {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+    }
+
+    .hint {
+      margin-top: 20px;
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: 16px;
+      right: 18px;
+      font-size: 1.2rem;
+      opacity: 0.8;
+      animation: pulse 1.4s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.16);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 28px 18px 40px;
+        border-radius: 20px;
+      }
+
+      .messages {
+        height: 72px;
+      }
+
+      .message {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div class="subtitle">When love meets code</div>
+
+      <div class="messages">
+        <!-- Buradaki metinleri istediğin gibi değiştir -->
+        <div class="message message-1">Hey, bugün biraz farklı bir şey denemek istedim...</div>
+        <div class="message message-2">Bu sayfa, sadece senin için yazılmış küçük bir hikâye.</div>
+        <div class="message message-3">Her satırında, seninle ilgili küçük bir sürpriz saklı.</div>
+        <div class="message message-4">Hazırsan, beraber devam edelim. ❤️</div>
+      </div>
+
+      <p class="hint">Mesajların bitmesini bekle ya da aşağı kaydırmaya devam et.</p>
+
+      <div class="heart">❤</div>
+    </div>
+  </div>
+</body>
+</html>
